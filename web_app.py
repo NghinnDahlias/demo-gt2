@@ -111,12 +111,12 @@ except Exception as error:
     st.error(f"Không đọc được hàm số. Hãy kiểm tra biểu thức. Chi tiết: {error}")
     st.stop()
 
-tab_calc, tab_geometry, tab_change = st.tabs([
+tab_calc, tab_geometry, tab_change, tab_app = st.tabs([
     "1 · TÍNH ĐẠO HÀM RIÊNG",
     "2 · Ý NGHĨA HÌNH HỌC",
-    "3 · SỰ BIẾN THIÊN"
+    "3 · SỰ BIẾN THIÊN",
+    "4 · ỨNG DỤNG"
 ])
-
 # ================================================================
 # TAB 1: TÍNH ĐẠO HÀM RIÊNG
 with tab_calc:
@@ -469,6 +469,566 @@ with tab_change:
             "- Nếu hướng u tiếp tuyến với đường mức tại A thì Dᵤf(A) = 0.\n"
             "- Dᵤf(A) > 0: hàm tăng theo u; Dᵤf(A) < 0: hàm giảm theo u."
         )
+
+# ================================================================
+# TAB 4: ỨNG DỤNG THỰC TIỄN
+with tab_app:
+
+    # ------------------ HEADER: POSTER
+    st.markdown("""
+    <div style="
+        background: linear-gradient(120deg, #153451, #287A83);
+        padding: 30px;
+        border-radius: 14px;
+        color: white;
+        margin-bottom: 22px;
+    ">
+        <div style="font-size:13px; letter-spacing:2px; opacity:0.85">
+            MATHEMATICS IN REAL LIFE
+        </div>
+        <h1 style="color:white; margin:10px 0">
+            ĐẠO HÀM RIÊNG TRONG THỰC TIỄN
+        </h1>
+        <p style="font-size:17px; margin-bottom:8px">
+            Từ mô hình toán học đến những bài toán trong khoa học,
+            công nghệ và đời sống.
+        </p>
+        <div style="font-size:13px; opacity:0.85">
+            PARTIAL DERIVATIVES · APPLICATIONS · CASE STUDY
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    ### 01 · Đạo hàm riêng giúp giải quyết vấn đề gì?
+
+    Trong thực tế, một đại lượng thường phụ thuộc vào nhiều yếu tố
+    cùng lúc. Chẳng hạn, cảm giác nóng phụ thuộc vào nhiệt độ và
+    độ ẩm; sản lượng phụ thuộc vào vốn và lao động.
+
+    Nếu biểu diễn đại lượng đó bằng hàm hai biến:
+
+    """)
+    st.latex(r"z=f(x,y)")
+
+    st.markdown("""
+    Ta có thể sử dụng hai đạo hàm riêng để trả lời hai câu hỏi:
+
+    - **Đạo hàm theo x:** Nếu chỉ thay đổi x, còn y giữ nguyên,
+      z thay đổi như thế nào?
+    - **Đạo hàm theo y:** Nếu chỉ thay đổi y, còn x giữ nguyên,
+      z thay đổi như thế nào?
+
+    Đây là cách toán học giúp phân tích mức độ ảnh hưởng của
+    từng yếu tố đến một hiện tượng thực tế.
+    """)
+
+    st.divider()
+
+    # ------------------ APPLICATION OVERVIEW
+    st.markdown("## 02 · Sáu lĩnh vực ứng dụng")
+
+    st.caption(
+        "Các ví dụ dưới đây minh họa cách chuyển một vấn đề thực tế "
+        "thành mô hình hàm nhiều biến và diễn giải đạo hàm riêng."
+    )
+
+    applications = [
+        {
+            "title": "Kiến trúc & Quy hoạch",
+            "tag": "ĐỊA HÌNH",
+            "desc": "Phân tích độ dốc địa hình để thiết kế hệ thống "
+                    "thoát nước, san lấp mặt bằng và bố trí cảnh quan.",
+            "formula": r"z=f(x,y)",
+            "meaning": r"f_x,\ f_y,\ \nabla f",
+            "detail": "Hai đạo hàm riêng cho biết độ thay đổi cao độ "
+                      "theo hai phương vuông góc. Gradient chỉ hướng "
+                      "dốc nhất của địa hình.",
+            "source": "[Tài liệu GIS và AutoCAD Civil 3D]"
+        },
+        {
+            "title": "Vi sinh học",
+            "tag": "SINH TRƯỞNG",
+            "desc": "Nghiên cứu tốc độ sinh trưởng của vi sinh vật "
+                    "dưới tác động đồng thời của nhiệt độ và dinh dưỡng.",
+            "formula": r"R=f(T,C)",
+            "meaning": r"\frac{\partial R}{\partial T}",
+            "detail": "Cho biết tốc độ sinh trưởng thay đổi thế nào "
+                      "khi nhiệt độ thay đổi, trong điều kiện nồng độ "
+                      "chất dinh dưỡng không đổi.",
+            "source": "[Monod, 1949]"
+        },
+        {
+            "title": "Kinh tế vĩ mô",
+            "tag": "NĂNG SUẤT",
+            "desc": "Đánh giá mức đóng góp của vốn đầu tư và lực lượng "
+                    "lao động vào tổng sản lượng kinh tế.",
+            "formula": r"Y=f(K,L)",
+            "meaning": r"\frac{\partial Y}{\partial K}",
+            "detail": "Đây là năng suất biên của vốn: sản lượng "
+                      "thay đổi bao nhiêu khi tăng thêm một đơn vị vốn, "
+                      "giữ nguyên lao động.",
+            "source": "[Marriott, Working Paper]"
+        },
+        {
+            "title": "Trí tuệ nhân tạo",
+            "tag": "MACHINE LEARNING",
+            "desc": "Tối ưu các tham số của mô hình thông qua thuật toán "
+                    "Gradient Descent.",
+            "formula": r"L=f(w_1,w_2,\ldots,w_n)",
+            "meaning": r"\frac{\partial L}{\partial w_i}",
+            "detail": "Đạo hàm riêng cho biết hàm mất mát thay đổi "
+                      "như thế nào khi điều chỉnh một tham số. "
+                      "Gradient giúp xác định hướng cập nhật tham số.",
+            "source": "[Tài liệu về Gradient Descent]"
+        },
+        {
+            "title": "Xử lý ảnh kỹ thuật số",
+            "tag": "COMPUTER VISION",
+            "desc": "Phát hiện đường biên, nhận diện ranh giới giữa "
+                    "các vùng ảnh và hỗ trợ xử lý hình ảnh.",
+            "formula": r"I=I(x,y)",
+            "meaning": r"I_x,\ I_y",
+            "detail": "Đạo hàm riêng mô tả mức thay đổi cường độ "
+                      "điểm ảnh theo hai phương. Độ biến thiên lớn "
+                      "thường xuất hiện tại các vùng biên.",
+            "source": "[Springer, 2007]"
+        },
+        {
+            "title": "Khí tượng học",
+            "tag": "DỰ BÁO THỜI TIẾT",
+            "desc": "Phân tích sự thay đổi áp suất, nhiệt độ và các "
+                    "đại lượng khí tượng theo không gian và thời gian.",
+            "formula": r"P=P(x,y,z,t)",
+            "meaning": r"\frac{\partial P}{\partial x}",
+            "detail": "Đo sự thay đổi áp suất theo phương x tại cùng "
+                      "một thời điểm và các tọa độ còn lại được giữ cố định. "
+                      "Gradient áp suất liên quan đến chuyển động của không khí.",
+            "source": "[Tài liệu khí tượng học]"
+        }
+    ]
+
+    for i in range(0, len(applications), 2):
+        cols = st.columns(2, gap="medium")
+
+        for col, app in zip(cols, applications[i:i+2]):
+            with col:
+                with st.container(border=True):
+                    st.caption(app["tag"])
+                    st.markdown(f"### {app['title']}")
+                    st.write(app["desc"])
+                    st.latex(app["formula"])
+                    st.markdown("**Đạo hàm liên quan**")
+                    st.latex(app["meaning"])
+                    with st.expander("Hiểu rõ ứng dụng"):
+                        st.write(app["detail"])
+                        st.caption("Nguồn tham khảo: " + app["source"])
+
+    st.info(
+        "Điểm chung: Đạo hàm riêng giúp tách riêng ảnh hưởng "
+        "của từng yếu tố trong một hệ thống có nhiều biến."
+    )
+
+    st.divider()
+
+    # ============================================================
+    # CASE STUDY: HEAT INDEX
+    st.markdown("## 03 · Nghiên cứu trường hợp: Chỉ số nóng Heat Index")
+
+    st.markdown("""
+    <div style="
+        background:#E9F2F5;
+        color:#153451;
+        padding:18px;
+        border-radius:10px;
+        border-left:5px solid #287A83;
+    ">
+        <b>CÂU HỎI NGHIÊN CỨU</b>
+        <p style="margin-top:8px">
+        Khi nhiệt độ hoặc độ ẩm tăng lên, cảm giác nóng của con người
+        sẽ thay đổi như thế nào? Yếu tố nào ảnh hưởng mạnh hơn?
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.write("### 3.1 · Cơ sở thực tiễn")
+
+    st.write("""
+    Cảm giác nóng không chỉ phụ thuộc vào nhiệt độ không khí.
+    Khi độ ẩm cao, mồ hôi khó bay hơi, khiến cơ thể khó tản nhiệt.
+    Vì vậy, cùng một nhiệt độ nhưng môi trường có độ ẩm khác nhau
+    có thể tạo ra cảm giác nóng khác nhau.
+
+    Chỉ số nóng (Heat Index – HI) kết hợp nhiệt độ và độ ẩm
+    để ước tính mức nóng mà con người cảm nhận được trong bóng râm.
+    """)
+
+    st.markdown("**Mô hình toán học:**")
+    st.latex(r"HI=f(T,RH)")
+
+    st.markdown("""
+    Trong đó:
+
+    - T: Nhiệt độ không khí (°F).
+    - RH: Độ ẩm tương đối (%).
+    - HI: Chỉ số nóng (°F).
+    """)
+
+    st.write("### 3.2 · Công thức Rothfusz")
+
+    with st.expander("Xem công thức đầy đủ và các hệ số", expanded=False):
+        st.markdown("""
+        Công thức hồi quy Rothfusz được Cơ quan Dự báo thời tiết
+        Hoa Kỳ (NWS) sử dụng để ước tính chỉ số nóng:
+        """)
+        st.latex(r"""
+        \begin{aligned}
+        HI={}&c_0+c_1T+c_2RH+c_3TRH\\
+        &+c_4T^2+c_5RH^2+c_6T^2RH\\
+        &+c_7TRH^2+c_8T^2RH^2
+        \end{aligned}
+        """)
+
+        coefficients = pd.DataFrame({
+            "Hệ số": ["c₀", "c₁", "c₂", "c₃", "c₄",
+                      "c₅", "c₆", "c₇", "c₈"],
+            "Giá trị": [
+                -42.379, 2.04901523, 10.14333127,
+                -0.22475541, -0.00683783, -0.05481717,
+                0.00122874, 0.00085282, -0.00000199
+            ]
+        })
+        st.dataframe(coefficients, hide_index=True,
+                     use_container_width=True)
+
+        st.caption(
+            "Công thức Rothfusz áp dụng cho vùng chỉ số nóng từ "
+            "80°F trở lên và có các hiệu chỉnh trong một số "
+            "điều kiện độ ẩm đặc biệt."
+        )
+
+    st.write("### 3.3 · Số liệu quan trắc")
+
+    st.write("""
+    Nghiên cứu sử dụng số liệu nhiệt độ cao nhất và độ ẩm thấp nhất
+    ngày 09/04/2026 tại bốn trạm khí tượng ở An Giang.
+    """)
+    weather_data = pd.DataFrame([
+        ["Phú Quốc", 31.4, 69],
+        ["Rạch Giá", 33.2, 54],
+        ["Thổ Chu", 34.2, 61],
+        ["Châu Đốc", 36.1, 53]
+    ], columns=["Trạm", "Nhiệt độ (°C)", "Độ ẩm (%)"])
+
+    st.dataframe(weather_data, hide_index=True,
+                 use_container_width=True)
+
+    st.caption(
+        "Lưu ý: Nhiệt độ cao nhất và độ ẩm thấp nhất trong ngày "
+        "được ghép thành một cặp để ước tính. Chúng không nhất "
+        "thiết được đo tại cùng một thời điểm."
+    )
+
+    st.write("### 3.4 · Đạo hàm riêng và ý nghĩa")
+
+    st.markdown("""
+    Để dễ tính toán, công thức gốc sử dụng T theo °F.
+    Sau khi tính toán, kết quả HI được đổi sang °C.
+
+    Khi lấy đạo hàm, ta giữ cố định biến còn lại:
+    """)
+
+    st.latex(r"""
+    \begin{aligned}
+    \frac{\partial HI}{\partial T}
+    ={}&c_1+c_3RH+2c_4T\\
+    &+2c_6TRH+c_7RH^2+2c_8TRH^2
+    \end{aligned}
+    """)
+
+    st.latex(r"""
+    \begin{aligned}
+    \frac{\partial HI}{\partial RH}
+    ={}&c_2+c_3T+2c_5RH\\
+    &+c_6T^2+2c_7TRH+2c_8T^2RH
+    \end{aligned}
+    """)
+
+    st.markdown("""
+    **Diễn giải:**
+
+    - Đạo hàm theo T: Nhiệt độ tăng thêm 1°C thì HI thay đổi
+      bao nhiêu °C, khi độ ẩm không đổi.
+    - Đạo hàm theo RH: Độ ẩm tăng thêm 1% thì HI thay đổi
+      bao nhiêu °C, khi nhiệt độ không đổi.
+    """)
+
+    st.write("### 3.5 · Kết quả tính toán")
+
+    result_data = pd.DataFrame([
+        ["Phú Quốc", 31.4, 69, 38.4, 2.72, 0.32],
+        ["Rạch Giá", 33.2, 54, 37.9, 2.26, 0.33],
+        ["Thổ Chu", 34.2, 61, 43.2, 2.87, 0.44],
+        ["Châu Đốc", 36.1, 53, 44.8, 2.75, 0.49]
+    ], columns=[
+        "Trạm", "T (°C)", "RH (%)", "HI (°C)",
+        "∂HI/∂T", "∂HI/∂RH"
+    ])
+
+    st.dataframe(
+        result_data.style.format({
+            "T (°C)": "{:.1f}",
+            "HI (°C)": "{:.1f}",
+            "∂HI/∂T": "{:.2f}",
+            "∂HI/∂RH": "{:.2f}"
+        }),
+        hide_index=True,
+        use_container_width=True
+    )
+
+    st.markdown("#### Phân tích điểm khảo sát: Châu Đốc")
+
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Nhiệt độ", "36,1 °C")
+    m2.metric("Độ ẩm", "53%")
+    m3.metric("Chỉ số nóng", "44,8 °C")
+
+    st.latex(r"""
+    \frac{\partial HI}{\partial T}\approx 2.75
+    """)
+
+    st.latex(r"""
+    \frac{\partial HI}{\partial RH}\approx 0.49
+    """)
+
+    st.success(
+        "Tại điểm khảo sát Châu Đốc: nếu nhiệt độ tăng 1°C "
+        "và độ ẩm giữ nguyên, chỉ số nóng tăng xấp xỉ 2,75°C. "
+        "Nếu độ ẩm tăng 1% và nhiệt độ giữ nguyên, chỉ số nóng "
+        "tăng xấp xỉ 0,49°C."
+    )
+
+    st.markdown("""
+    Như vậy, tại điều kiện khảo sát này, mức độ nhạy của HI
+    theo nhiệt độ lớn hơn theo độ ẩm. Tuy nhiên, cả hai yếu tố
+    đều góp phần làm tăng cảm giác nóng.
+    """)
+
+    st.divider()
+
+    # ============================================================
+    # GEOMETRIC MEANING
+    st.markdown("## 04 · Liên hệ với ý nghĩa hình học")
+
+    st.write("### 4.1 · Tiếp diện tại điểm Châu Đốc")
+
+    st.write("""
+    Ta xem HI là một mặt cong phụ thuộc vào hai biến T và RH.
+    Tại mỗi điểm trên mặt cong, ta có thể dựng một mặt phẳng
+    tiếp xúc để ước lượng sự thay đổi của chỉ số nóng.
+    """)
+
+    st.latex(r"""
+    \Delta HI\approx
+    \frac{\partial HI}{\partial T}\Delta T+
+    \frac{\partial HI}{\partial RH}\Delta RH
+    """)
+
+    st.latex(r"""
+    \boxed{\Delta HI\approx 2.75\Delta T+0.49\Delta RH}
+    """)
+
+    st.markdown("""
+    **Ví dụ:** Nếu nhiệt độ tăng 1°C và độ ẩm tăng 5%,
+    ta có thể ước lượng:
+    """)
+
+    st.latex(r"""
+    \Delta HI\approx 2.75(1)+0.49(5)=5.20^\circ C
+    """)
+
+    st.write("### 4.2 · So sánh với kết quả chính xác")
+
+    tangent_data = pd.DataFrame([
+        ["+0,5°C; +2%", 2.46, 2.35, "4,4%"],
+        ["+1°C; +5%", 5.74, 5.18, "9,7%"],
+        ["+2°C; +10%", 12.69, 10.37, "18,3%"]
+    ], columns=[
+        "Thay đổi (T; RH)", "Tính trực tiếp (°C)",
+        "Theo tiếp diện (°C)", "Sai lệch"
+    ])
+
+    st.dataframe(tangent_data, hide_index=True,
+                 use_container_width=True)
+
+    st.caption(
+        "Tiếp diện cho kết quả gần với hàm gốc khi thay đổi nhỏ. "
+        "Khi mức thay đổi lớn, độ cong của mặt HI làm sai lệch tăng."
+    )
+
+    st.write("### 4.3 · Ý nghĩa đường mức")
+
+    st.write("""
+    Đường mức biểu diễn các cặp nhiệt độ và độ ẩm tạo ra
+    cùng một giá trị HI.
+
+    Khi HI không đổi:
+    """)
+
+    st.latex(r"""
+    dHI=0
+    """)
+
+    st.latex(r"""
+    \frac{dRH}{dT}
+    =-\frac{\partial HI/\partial T}
+    {\partial HI/\partial RH}
+    \approx -5.7
+    """)
+
+    st.info(
+        "Tại Châu Đốc, nếu muốn giữ cảm giác nóng không đổi, "
+        "nhiệt độ tăng thêm 1°C thì độ ẩm cần giảm khoảng 5,7 "
+        "điểm phần trăm (theo xấp xỉ tuyến tính tại điểm khảo sát)."
+    )
+
+    st.markdown("""
+    Điều này cũng cho thấy đường mức có độ dốc âm:
+    nhiệt độ tăng thì độ ẩm phải giảm để duy trì cùng một HI.
+    """)
+
+    st.divider()
+
+    # ============================================================
+    # REAL WORLD MEANING
+    st.markdown("## 05 · Ý nghĩa và khả năng ứng dụng thực tế")
+
+    impact_cols = st.columns(2, gap="medium")
+
+    with impact_cols[0]:
+        with st.container(border=True):
+            st.markdown("### Cảnh báo nắng nóng")
+            st.write("""
+            Dựa vào mức độ nhạy của HI, cơ quan khí tượng có thể
+            đánh giá nhanh mức thay đổi cảm giác nóng khi dự báo
+            nhiệt độ và độ ẩm biến động.
+            """)
+
+        with st.container(border=True):
+            st.markdown("### Bảo vệ người lao động")
+            st.write("""
+            Chỉ số nóng giúp nhận diện điều kiện có nguy cơ gây
+            kiệt sức vì nóng, đặc biệt với công nhân xây dựng,
+            nông dân và người làm việc ngoài trời.
+            """)
+
+    with impact_cols[1]:
+        with st.container(border=True):
+            st.markdown("### Lựa chọn giải pháp giảm nóng")
+            st.write("""
+            Có thể dùng mô hình để so sánh tác động của thông gió,
+            làm mát và kiểm soát độ ẩm đối với cảm giác nóng.
+            """)
+
+        with st.container(border=True):
+            st.markdown("### Ước lượng nhanh")
+            st.write("""
+            Tiếp diện cho phép ước lượng sự thay đổi của HI
+            mà không cần tính lại toàn bộ công thức phức tạp
+            khi điều kiện thay đổi nhỏ.
+            """)
+
+    st.divider()
+
+    # ============================================================
+    # CONCLUSION AND LIMITATIONS
+    st.markdown("## 06 · Kết luận")
+
+    st.markdown("""
+    Qua nghiên cứu chỉ số Heat Index, ta thấy đạo hàm riêng
+    không chỉ là một phép tính toán học mà còn là công cụ
+    để đánh giá mức độ ảnh hưởng của nhiều yếu tố đến
+    một hiện tượng thực tế.
+
+    Tại Châu Đốc, nhiệt độ và độ ẩm đều có tác động làm tăng
+    chỉ số nóng. Tuy nhiên, trong điều kiện khảo sát,
+    mức độ nhạy theo nhiệt độ cao hơn mức độ nhạy theo độ ẩm.
+
+    **Kết luận quan trọng:** Đạo hàm riêng giúp chúng ta
+    phân tích tác động riêng lẻ của từng biến, còn gradient,
+    tiếp diện và đường mức giúp mô tả sự biến thiên của
+    hệ thống một cách trực quan hơn.
+    """)
+
+    with st.expander("Giới hạn của nghiên cứu và lưu ý"):
+        st.markdown("""
+        1. Số liệu chỉ lấy từ một ngày và bốn trạm quan trắc.
+        2. Nhiệt độ cao nhất và độ ẩm thấp nhất không nhất thiết
+           xuất hiện cùng thời điểm.
+        3. Công thức Rothfusz là công thức hồi quy xấp xỉ,
+           có sai số và chỉ áp dụng trong phạm vi phù hợp.
+        4. HI được tính trong bóng râm, không đại diện hoàn toàn
+           cho điều kiện phơi nắng trực tiếp.
+        5. Tiếp diện chỉ cho kết quả xấp xỉ tốt khi các biến
+           thay đổi đủ nhỏ.
+        """)
+
+    st.divider()
+
+    # ============================================================
+    # REFERENCES
+    st.markdown("## 07 · Tài liệu tham khảo")
+
+    with st.expander("A. Chỉ số nóng và khí tượng", expanded=True):
+        st.markdown("""
+        **[1] Rothfusz, L. P. (1990).**
+        *The Heat Index Equation (or, More Than You Ever Wanted
+        to Know About Heat Index).*
+        National Weather Service, Technical Attachment SR 90-23.
+
+        [Đọc tài liệu Rothfusz](https://www.weather.gov/media/bgm/ta_htindx.PDF)
+
+        **[2] National Weather Service.**
+        Heat Index – Phân nhóm mức nóng và nguy cơ sức khỏe.
+
+        [Xem tài liệu NWS](https://weather.gov/fwd/heat2)
+
+        **[3] Đài Khí tượng Thủy văn tỉnh An Giang (2026).**
+        Tin dự báo nắng nóng tỉnh An Giang.
+
+        [Xem số liệu quan trắc](https://angiang.gov.vn/sites/default/files/2026/04/tap-tin-dinh-kem/agianong202604100900.pdf)
+
+        **[4] WHO & WMO (2025).**
+        Climate change and workplace heat stress.
+        """)
+
+    with st.expander("B. Các lĩnh vực ứng dụng khác"):
+        st.markdown("""
+        **[5] Kiến trúc và quy hoạch:** Giáo trình Toán cao cấp
+        cho Kiến trúc – Xây dựng; tài liệu nội suy địa hình
+        và phân tích bề mặt trong GIS.
+
+        **[6] Vi sinh học:** Monod, J. (1949).
+        The Growth of Bacterial Cultures.
+        *Annual Review of Microbiology.*
+
+        **[7] Kinh tế:** 
+        [Partial Differential Equations in Economics –
+        A Comprehensive Review](https://www.researchgate.net/publication/416114203_Partial_Differential_Equations_in_Economics_A_Comprehensive_Review)
+
+        [Working Paper – University of Warwick](https://wrap.warwick.ac.uk/id/eprint/1839/1/WRAP_Marriott_fwp99-10.pdf)
+
+        **[8] Xử lý ảnh:**
+        [Springer – Visual Computing](https://link.springer.com/article/10.1007/s00371-007-0190-z)
+
+        **[9] AI và Machine Learning:** Tài liệu về
+        Gradient Descent và tối ưu hóa hàm mất mát.
+        """)
+
+    st.caption(
+        "Nội dung được biên soạn phục vụ mục đích học tập "
+        "và minh họa ứng dụng của đạo hàm riêng."
+    )
 
 st.divider()
 st.caption("Lưu ý: các kết quả đạo hàm được tính ký hiệu bằng SymPy; đồ thị và nghiệm điểm tới hạn là biểu diễn/tính toán số trong miền khảo sát.")
